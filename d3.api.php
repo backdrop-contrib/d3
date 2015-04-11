@@ -12,8 +12,8 @@
  * Add custom library info handlers.
  *
  * @return
- *   An array of new handler info. The key is important as it will define 
- *   what in the library .info file is actually being handled. In the case of 
+ *   An array of new handler info. The key is important as it will define
+ *   what in the library .info file is actually being handled. In the case of
  *   the example below, the handlers would search for anything in the info
  *   file with the key "views".
  *   Examples:

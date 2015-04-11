@@ -11,7 +11,7 @@ class D3LibraryInfoProcessor {
   /**
    * Current key being processed.
    *
-   * @var array 
+   * @var array
    */
   private $key;
 

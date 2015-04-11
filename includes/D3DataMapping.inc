@@ -5,13 +5,13 @@
  */
 
 /**
- * Maps information from a 
+ * Maps information from a
  */
 class D3DataMapping {
   /**
    * Current library to map.
    *
-   * @var D3LibraryInfoController 
+   * @var D3LibraryInfoController
    */
   protected $library;
 
