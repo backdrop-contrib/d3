@@ -50,7 +50,7 @@ function d3_permission() {
 function d3_theme() {
   foreach (libraries_info() as $path => $library) {
     // Call this function to get all fields - i.e. library path.
-    $library = libraries_load($path);
+    $library = libraries_detect($path);
     // If a template was specified in the .info file or hook_libraries_info.
     if (isset($library['template'])) {
       // Change d3.[library name] to d3_[library name] for a theme key.
