@@ -68,7 +68,7 @@ function d3_examples_linegraph() {
 
   $chart = array(
     'id' => 'visualization',
-    'type' => 'LineGraph',
+    'type' => 'linegraph',
     'legend' => array(
       'Development',
       'QA',
@@ -121,7 +121,7 @@ function d3_examples_column() {
 
   $chart = array(
     'id' => 'visualization',
-    'type' => 'ColumnChart',
+    'type' => 'columnchart',
     'legend' => array(
       'Development',
       'QA',
@@ -151,7 +151,7 @@ function d3_examples_bar() {
   // Temporary data until I get randomization working.
   $chart = array(
     'id' => 'visualization',
-    'type' => 'BarChart',
+    'type' => 'barchart',
     'legend' => array(
       'Development',
       'QA',
@@ -186,7 +186,7 @@ function d3_examples_bar() {
 function d3_examples_pie() {
   $chart = array(
     'id' => 'visualization',
-    'type' => 'PieChart',
+    'type' => 'piechart',
     'rows' => array(
       array('Development', 500),
       array('Strategy', 50),
