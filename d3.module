@@ -45,21 +45,34 @@ function d3_permission() {
 }
 
 /**
+ * Implements hook_autoload_info().
+ */
+function d3_autoload_info() {
+  return array(
+    'D3LibraryInfoProcessor' => 'includes/D3LibraryInfoProcessor.inc',
+    'D3LibraryInfoController' => 'includes/D3LibraryInfoController.inc',
+    'D3DataMapping' => 'includes/D3DataMapping.inc',
+  );
+}
+
+/**
  * Implements hook_theme().
  */
 function d3_theme() {
-  foreach (libraries_info() as $path => $library) {
-    // Call this function to get all fields - i.e. library path.
-    $library = libraries_detect($path);
-    // If a template was specified in the .info file or hook_libraries_info.
-    if (isset($library['template'])) {
-      // Change d3.[library name] to d3_[library name] for a theme key.
-      $theme_key = str_replace('.', '_', $library['machine name']);
-      $themes[$theme_key] = array(
-        'variables' => array(),
-        'template' => $library['template'],
-        'path' => $library['library path'],
-      );
+  if (module_exists('libraries')) {
+    foreach (libraries_info() as $path => $library) {
+      // Call this function to get all fields - i.e. library path.
+      $library = libraries_detect($path);
+      // If a template was specified in the .info file or hook_libraries_info.
+      if (isset($library['template'])) {
+        // Change d3.[library name] to d3_[library name] for a theme key.
+        $theme_key = str_replace('.', '_', $library['machine name']);
+        $themes[$theme_key] = array(
+          'variables' => array(),
+          'template' => $library['template'],
+          'path' => $library['library path'],
+        );
+      }
     }
   }
 
@@ -141,8 +154,8 @@ function _d3_list_library_versions_from_libraries() {
  */
 function d3_preprocess_d3(&$variables) {
   // Let drupal_attributes render this.
-  $variables['classes_array'][] = $variables['type'];
-  $variables['attributes_array']['id'] = array($variables['vis_id']);
+  $variables['classes'][] = $variables['type'];
+  $variables['attributes']['id'] = array($variables['vis_id']);
 
   $library = isset($variables['library']) ? $variables['library'] : FALSE;
 
@@ -390,15 +403,17 @@ function d3_draw($vis) {
   // Type is required for correct processing.
   $type = !empty($vis['type']) ? strtolower($vis['type']) : FALSE;
   if (!$type) {
-    drupal_set_message(t('No chart type specified'), 'error');
+    backdrop_set_message(t('No chart type specified'), 'error');
     return;
   }
 
-  // Ensure we have d3 installed, don't just show a blank screen.
-  $d3 = libraries_load('d3');
-  if (empty($d3['installed'])) {
-    drupal_set_message(t('The d3 library is not correctly installed'), 'error');
-    return;
+  if (module_exists('libraries')) {
+    // Ensure we have d3 installed, don't just show a blank screen.
+    $d3 = libraries_load('d3');
+    if (empty($d3['installed'])) {
+      backdrop_set_message(t('The d3 library is not correctly installed'), 'error');
+      return;
+    }
   }
 
   $output = array('#theme' => 'd3');
@@ -438,7 +453,7 @@ function d3_draw($vis) {
     return render($output);
   }
   else {
-    drupal_set_message(t('Invalid chart type %type and/or library %library_name is not installed', array(
+    backdrop_set_message(t('Invalid chart type %type and/or library %library_name is not installed', array(
       '%type' => $type,
       '%library_name' => $library_name,
     )));
@@ -459,23 +474,26 @@ function d3_get_libraries() {
   if ($d3_libraries) {
     return $d3_libraries;
   }
-  // Returns all libraries in the default folders.
-  $libraries = libraries_info();
 
-  foreach ($libraries as $library) {
-    $library_name = $library['machine name'];
-    // Filter out any other non-d3 library. All d3 libraries should have
-    // the prefix "d3.".
-    if (strpos($library_name, 'd3.') === FALSE) {
-      continue;
-    }
-    // Do not list these default extension libraries.
-    if (in_array($library_name, array('d3.extend', 'd3.tooltip', 'd3.drupal'))) {
-      continue;
-    }
+  if (module_exists('libraries')) {
+    // Returns all libraries in the default folders.
+    $libraries = libraries_info();
 
-    $d3_libraries[$library_name] = $library;
-    $d3_libraries[$library_name]['js callback'] = str_replace('d3.', '', $library_name);
+    foreach ($libraries as $library) {
+      $library_name = $library['machine name'];
+      // Filter out any other non-d3 library. All d3 libraries should have
+      // the prefix "d3.".
+      if (strpos($library_name, 'd3.') === FALSE) {
+        continue;
+      }
+      // Do not list these default extension libraries.
+      if (in_array($library_name, array('d3.extend', 'd3.tooltip', 'd3.drupal'))) {
+        continue;
+      }
+
+      $d3_libraries[$library_name] = $library;
+      $d3_libraries[$library_name]['js callback'] = str_replace('d3.', '', $library_name);
+    }
   }
 
   return $d3_libraries;

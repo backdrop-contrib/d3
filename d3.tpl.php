@@ -4,4 +4,4 @@
  * Default theme file for d3 visualizations.
  */
  ?>
-<div <?php print $attributes ?> class="<?php print implode(' ', $classes_array); ?>"></div>
+<div class="<?php print implode(' ', $classes); ?>"<?php print backdrop_attributes($attributes); ?>></div>

@@ -1,10 +1,8 @@
-name = D3 
+type = module
+name = D3
 description = An API for creating visualizations from D3 libraries
-core = 7.x
-dependencies[] = libraries (>=2.0)
+backdrop = 1.x
 package = Visualization
 configure = admin/config/d3/settings
-files[] = includes/D3LibraryInfoProcessor.inc
-files[] = includes/D3LibraryInfoController.inc
-files[] = includes/D3DataMapping.inc
+
 files[] = tests/d3_info_handler.test
