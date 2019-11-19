@@ -148,7 +148,6 @@ function d3_examples_column() {
  *   HTML for the page content.
  */
 function d3_examples_bar() {
-
   // Temporary data until I get randomization working.
   $chart = array(
     'id' => 'visualization',

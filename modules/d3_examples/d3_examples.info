@@ -1,5 +1,7 @@
+type = module
 name = D3 Examples
-description = Several functions that outline the different uses of the D3 API 
-core = 7.x
+description = Several functions that outline the different uses of the D3 API
+backdrop = 1.x
 package = Visualization
+
 dependencies[] = d3
